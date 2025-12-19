@@ -89,9 +89,13 @@ def main(argv=None):
         print("[ERROR] SBOM name must be specified.")
         return -1
 
+    if args["format"] in ["excel", "pdf"] and args["output_file"] == "":
+        print("[ERROR] Output filename must be specified.")
+        return -1
+
     if args["debug"]:
         print("Input file", args["input_file"])
-        out = args["output_file"] if args["output_file"] == "" else "<STDOUT>"
+        out = args["output_file"] if args["output_file"] != "" else "<STDOUT>"
         print("Output file", out)
         print("Include license text", args["include_license"])
 
