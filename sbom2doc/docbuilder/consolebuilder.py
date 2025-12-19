@@ -16,7 +16,7 @@ class ConsoleBuilder(DocBuilder):
     def heading(self, level, title, number=True):
         print(Panel(title, style="bold", expand=False))
 
-    def paragraph(self, text):
+    def paragraph(self, text, safecontent=False):
         print(f"\n{text}")
 
     def createtable(self, header, validate=None):

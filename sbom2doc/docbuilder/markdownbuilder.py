@@ -14,7 +14,7 @@ class MarkdownBuilder(DocBuilder):
         heading_field = "#" * level
         self.markdown_document.append(f"\n{heading_field} {title}\n")
 
-    def paragraph(self, text):
+    def paragraph(self, text, safecontent=False):
         self.markdown_document.append(f"{text}")
 
     def createtable(self, header, validate=None):

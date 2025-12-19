@@ -9,7 +9,7 @@ class DocBuilder:
     def heading(self, level, title, number=True):
         pass
 
-    def paragraph(self, text):
+    def paragraph(self, text, safecontent=False):
         pass
 
     def createtable(self, header, validate):

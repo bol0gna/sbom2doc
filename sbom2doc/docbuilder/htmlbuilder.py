@@ -1,6 +1,8 @@
 # Copyright (C) 2023 Anthony Harrison
 # SPDX-License-Identifier: Apache-2.0
 
+import html
+
 from lib4sbom.output import SBOMOutput
 
 from sbom2doc.docbuilder.docbuilder import DocBuilder
@@ -10,11 +12,18 @@ class HTMLBuilder(DocBuilder):
     def __init__(self, style=None):
         self.html_document = []
 
-    def heading(self, level, title, number=True):
-        self.html_document.append(f"\n<h{level}>{title}</h{level}>\n")
+    def _sanitise(self, item):
+        return html.escape(str(item), quote=True)
 
-    def paragraph(self, text):
-        self.html_document.append(f"<p>{text}</p>")
+    def heading(self, level, title, number=True):
+        self.html_document.append(f"\n<h{level}>{self._sanitise(title)}</h{level}>\n")
+
+    def paragraph(self, text, safecontent=False):
+        # Trusted sources are not sanitised
+        if safecontent:
+            self.html_document.append(f"<p>{text}</p>")
+        else:
+            self.html_document.append(f"<p>{self._sanitise(text)}</p>")
 
     def createtable(self, header, validate=None):
         # Layout is [headings, ....]
@@ -24,7 +33,7 @@ class HTMLBuilder(DocBuilder):
 
         self.html_document.append("<thead><tr>\n")
         for d in header:
-            self.html_document.append(f"<th scope='col'>{d}</th>\n")
+            self.html_document.append(f"<th scope='col'>{self._sanitise(d)}</th>\n")
         self.html_document.append("</tr>\n")
         self.html_document.append("</thead><tbody class='table-group-divider'>\n")
 
@@ -39,7 +48,7 @@ class HTMLBuilder(DocBuilder):
         # table_row = " | ".join(d for d in my_data)
         self.html_document.append("<tr>\n")
         for d in my_data:
-            self.html_document.append(f"<td>{d}</td>\n")
+            self.html_document.append(f"<td>{self._sanitise(d)}</td>\n")
         self.html_document.append("</tr>\n")
 
     def showtable(self, widths=None):

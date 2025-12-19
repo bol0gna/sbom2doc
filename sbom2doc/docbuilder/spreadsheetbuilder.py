@@ -38,7 +38,7 @@ class SpreadsheetBuilder(DocBuilder):
         self.workbook_document.active = self.worksheet
         self.worksheet_data = []
 
-    def paragraph(self, text):
+    def paragraph(self, text, safecontent=False):
         if len(text) > 0:
             if self.table_width == 0:
                 # Create pseudo table

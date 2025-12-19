@@ -1,6 +1,8 @@
 # Copyright (C) 2023 Anthony Harrison
 # SPDX-License-Identifier: Apache-2.0
 
+import re
+
 from reportlab import rl_config
 from reportlab.lib import colors
 from reportlab.lib.styles import ListStyle
@@ -119,11 +121,24 @@ class PDFBuilder(DocBuilder):
             self.contents.append(Paragraph(title, self.h1))
         self._spacer()
 
-    def paragraph(self, text):
+    def _sanitise(self, text):
+        if not text:
+            return ""
+        # remove attributes that aren't supported (e.g. 'title', 'class', 'id') leaving just the tag name.
+        # It specifically targets <span title="something"> -> <span>
+        text = re.sub(r'(<\w+)\s+[^>]*title="[^"]*"([^>]*>)', r'\1\2', text)
+        # Remove other common problematic attributes
+        unsupported_attrs = ['title', 'class', 'id', 'onclick', 'style']
+        for attr in unsupported_attrs:
+            pattern = rf'\s+{attr}="[^"]*"'
+            text = re.sub(pattern, '', text)
+        return text
+
+    def paragraph(self, text, safecontent=False):
         # Line breaks preserved if required
         text_elements = text.splitlines()
         for t in text_elements:
-            self.contents.append(Paragraph(t, self.body))
+            self.contents.append(Paragraph(self._sanitise(t), self.body))
             self._spacer()
 
     def _notes_paragraph(self, text):
@@ -145,7 +160,7 @@ class PDFBuilder(DocBuilder):
         i = 0
         newdata = []
         for d in data:
-            if self.table_validation[i] is not None:
+            if i < len(self.table_validation) and self.table_validation[i] is not None:
                 # Column size validation
                 if d is None:
                     newdata.append("")
