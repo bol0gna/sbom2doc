@@ -27,9 +27,11 @@ class HTMLBuilder(DocBuilder):
 
     def createtable(self, header, validate=None):
         # Layout is [headings, ....]
-        self.html_document.append("<table class='table table-striped table-bordered'>\n")
+        self.html_document.append(
+            "<table class='table table-striped table-bordered'>\n"
+        )
 
-        #table_headings = " | ".join(h for h in header)
+        # table_headings = " | ".join(h for h in header)
 
         self.html_document.append("<thead><tr>\n")
         for d in header:

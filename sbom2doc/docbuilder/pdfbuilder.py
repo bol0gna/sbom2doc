@@ -126,12 +126,12 @@ class PDFBuilder(DocBuilder):
             return ""
         # remove attributes that aren't supported (e.g. 'title', 'class', 'id') leaving just the tag name.
         # It specifically targets <span title="something"> -> <span>
-        text = re.sub(r'(<\w+)\s+[^>]*title="[^"]*"([^>]*>)', r'\1\2', text)
+        text = re.sub(r'(<\w+)\s+[^>]*title="[^"]*"([^>]*>)', r"\1\2", text)
         # Remove other common problematic attributes
-        unsupported_attrs = ['title', 'class', 'id', 'onclick', 'style']
+        unsupported_attrs = ["title", "class", "id", "onclick", "style"]
         for attr in unsupported_attrs:
             pattern = rf'\s+{attr}="[^"]*"'
-            text = re.sub(pattern, '', text)
+            text = re.sub(pattern, "", text)
         return text
 
     def paragraph(self, text, safecontent=False):
