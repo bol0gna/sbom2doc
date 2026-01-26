@@ -1,6 +1,6 @@
 lib4sbom >= 0.8.7
 rich
-reportlab
+reportlab >= 4.4.0
 packageurl-python
 requests
 openpyxl

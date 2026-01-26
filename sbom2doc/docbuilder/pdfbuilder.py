@@ -67,7 +67,7 @@ class PDFBuilder(DocBuilder):
         textColor=black,
         textTransform=None,
         firstLineIndent=12,
-        wordWrap=True,
+        wordWrap=None,
         uriWasteReduce=None,
         embeddedHyphenation=True,
         spaceShrinkage=True,
@@ -77,6 +77,7 @@ class PDFBuilder(DocBuilder):
         endDots=False,
         backColor=colors.white,
         alignment=False,
+        shaping=0,
     )
 
     def __init__(self):
