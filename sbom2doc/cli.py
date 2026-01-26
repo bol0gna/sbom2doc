@@ -103,7 +103,6 @@ def main(argv=None):
     # Load SBOM - will autodetect SBOM type
     try:
         sbom_parser.parse_file(input_file)
-
         generator.generate_document(
             args["format"],
             sbom_parser,
@@ -111,7 +110,6 @@ def main(argv=None):
             args["output_file"],
             args["include_license"],
         )
-
     except FileNotFoundError:
         print(f"{input_file} not found")
 
