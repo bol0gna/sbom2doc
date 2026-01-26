@@ -13,7 +13,11 @@ class HTMLBuilder(DocBuilder):
         self.html_document = []
 
     def _sanitise(self, item):
-        return html.escape(str(item), quote=True)
+        # Preserve br tag to prevent being escaped
+        working_text = str(item).replace("<br/>", "___BR_HOLDER___")
+        escaped_text = html.escape(working_text, quote=True)
+        # Add br tag back
+        return escaped_text.replace("___BR_HOLDER___", "<br/>")
 
     def heading(self, level, title, number=True):
         self.html_document.append(f"\n<h{level}>{self._sanitise(title)}</h{level}>\n")
